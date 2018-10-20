@@ -122,6 +122,13 @@ class property:
 ```
 
 # collection.nametuple表示记录
+一个工厂函数，用来构建带有字段名的元组合一个有名字的类
+Card = collection.nametuple('Card', ['rank', 'suit']) 
+card = Card('A', 'heart')
+Card._fields -> ('rank', 'suit')
+card = Card._make(iterable) <=> Card(*iterable)
+
+card._asdict() -> OrderedDict([('rank', 'A), ('suit', 'heart')])
 # from random import choice 随机选取一个元素
    choice(obj_list)
 # doctest 测试代码
@@ -160,3 +167,94 @@ lstcom = [item for item in items]
 # 生成器表达式
 gencomp = (item for item in items)
 逐个产生元素，遵守迭代器协议，减少内存占用
+
+#元组拆包
+t = (va, vb)
+- 平行赋值a, b = t
+- 迭代拆包 for a, b in tuples:
+- * 可以把一个可迭代对象拆开作为函数参数
+  def func(a, b):  可以通过func(*t)调用
+
+# os.path.split
+path, filename = os.path.split('/path/to/file.ext')
+path -> /path/to
+filename -> file.ext
+
+# 列表运算
+- s.count(e) e在s中查询的次数
+- s.index(e) 在s中找到e第一次出现的位置
+- s.insert(p, e) 在位置p之前插入e
+- s.extend(it) 把可迭代对象it追加给s
+- s.remove(e) 删除s中第一次出现的e
+- s.reverse() 就地把s的元素倒序排列
+- s.sort([key], [reverse]) 对s就地进行排序
+
+# 切片
+切片不包括最后一个元素
+- range(3), my_list[:3] 返回3个元素， 可以快速看见元素的个数
+- 起止都有时，有stop-start个元素
+- 便于分割列表 list[:x] list[x:]可以方便的切分为两部分
+  
+s[a:b:c] 在a和b之间以间隔c取值， c为负的话意味着反向取值
+s = 'bicycle'
+s[::-2] -> eccb
+
+seq[start:stop:step] Python会调用seq.__getitem__(slice(start, stop, step))
+P29
+
+... <-> Ellipsis对象 省略号python解释器看来是一个特殊的符号。
+
+
+# sorted
+会新建一个列表作为返回值。可接受任何可迭代对象作为参数。
+
+# bisect、insort
+bisect二分查找
+bisect(haystack, needle)返回值为needle可以插入后保持有序的位置
+bisect <-> bisect_right 插入位置在相同元素的后面
+bisect_left
+```
+def grade(score, breakpoints=[60, 70, 80, 90], grades='FDCBA'):
+    i = bisect.bisect(breakpoints, score)
+    return grades[i]
+```
+insort(seq, item) 插入元素保持有序
+
+# array.array
+array(typecode, iterable)
+- typecode b:有符号字符  d:浮点数 B:无符号字符 h：短整数
+- fromfile(fp, n)
+- tofile(fp)
+
+# memoryview 
+ 内置类，在不复制内容的情况下操作同一个数组的不同切片
+ numbers = array.array('h', [-2, -1, 0, 1, 2])
+ memv = memoryview(numbers)
+ memv_oct = memv.cast('B)
+ memv.tolist() -> [254, 255, 255, 255, 0, 0, 1, 0, 2, 0]
+
+# 字符串
+字符串是字符的一个序列，字符的定义是unicode字符
+- python3中str对象获取的元素就是unicode字符
+- python2中从uniocde对象获取的对象是unicode字符
+字符的码位：A U+0041 人类可读
+字符的编码： UTF8 A -> \x41 机器可读
+编码过程： 码位  -> 字节序列
+解码过程：字节序列-> 码位
+
+# 二进制序列 bytes和bytearray
+python3新加了bytes类型
+python2.6增加了bytearray类型
+- bytes和bytearray的各个元素介于0~255之间的整数
+- python2 str对象的字符是单个字符
+
+cafe = bytes('string', encoding='utf-8')
+bytes对象可以从str对象使用给定的编码构建
+
+# time.perf_counter
+python3.3+ 性能和精度更高的库
+
+# 缓冲协议对象
+
+
+# pickle序列化模块
