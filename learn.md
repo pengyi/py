@@ -120,3 +120,43 @@ class property:
         else
            instance.fset(value)
 ```
+
+# collection.nametuple表示记录
+# from random import choice 随机选取一个元素
+   choice(obj_list)
+# doctest 测试代码
+# __contains__
+如果一个集合类型没有实现__contains__方法， 那么in操作符
+就会按照顺序做一次迭代搜索
+# 特殊方法
+- 特殊方法的存在是为了被Python解释器调用, eg. len(my_obj)
+等价于my_obj.__len__(), 但内置类型直接抄近路，读PyVarObject
+的ob_size。可以使内置类型和自有类型拥有相同的接口
+- 特殊方法有时调用是隐式的，eg. for i in x:,背后用的是iter(x),
+函数背后则是x.__iter__()方法。
+
+# __str__和 __repr__
+__str__会被str调用，print也会隐式调用，如果一个对象没有实现__str__
+而又需要它的时候，解释器会用__repr__代替。%r, !r是__repr__对应的
+格式字符串
+
+# __bool__
+bool(x)背后调用x.__bool__,如果不存在__bool__，会尝试调用x.__len__()
+
+# 容器序列和扁平序列
+- 容器序列：list tuple collenctions.deque存放不同类型的引用
+- 扁平序列：str bytes bytearray memoryview array.array 只能容纳一种类型，
+  扁平序列是一段连续的内存空间，支持字符、字节、数字基础类型。
+- 可变序列 list bytearray array.array deque memoryview
+- 不可变序列 tuple str bytes
+
+# 换行忽略
+python会忽略代码中的[] () {}中的换行
+# 列表推导
+lstcom = [item for item in items]
+- 只用列表推导创建新列表，并尽量保持简短，
+- python3列表推导有了自己的局部作用域
+
+# 生成器表达式
+gencomp = (item for item in items)
+逐个产生元素，遵守迭代器协议，减少内存占用
