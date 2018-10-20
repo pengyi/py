@@ -219,6 +219,16 @@ def grade(score, breakpoints=[60, 70, 80, 90], grades='FDCBA'):
     return grades[i]
 ```
 insort(seq, item) 插入元素保持有序
+# collection.deque
+双向队列是一个线程安全的包，可以快速从两点添加和删除元素。
+dq = deque(range(10), maxlen=10)
+- dq.popleft()
+- dq.appendleft(e)
+- dq.append(e)
+- dq.pop()
+- dq.rotate(n)将右边的n个元素放在左边
+# heapq
+堆队列 heappush heappop
 
 # array.array
 array(typecode, iterable)
