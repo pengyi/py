@@ -266,5 +266,32 @@ python3.3+ 性能和精度更高的库
 
 # 缓冲协议对象
 
-
 # pickle序列化模块
+
+
+# 构造字典的方法
+- a = dict(one=1, two=2, three=3)
+- a = {'one': 1, 'two': 2, 'three': 3}
+- a = dict(zip(['one', 'two', 'three'], [1, 2, 3]))
+- a = dict([('one', 1), ('two', 2), ('three', 3)])
+- a = dict({'one': 1, 'two': 2, 'three': 3})
+- 字典推导 
+
+# 字典方法
+- d.fromkeys(it, [init]) 将迭代器it的值作为键， init作为初始值
+- d.__iter__() 获得键的迭代器
+-  d.popitem()随机返回一个键值对，并且从d中移除
+-  d.upate(m, [**kwargs]) m可以是映射或者键值对迭代器
+-  d.setdefault(key, [default]) 若字典里有值则返回该值，没有则设置值为default
+  
+# collections.defaultdict
+collections.defaultdict(default_factory)
+default_factory会在__getitem__里找不到建的时候调用而d.get()不会调用
+
+# inspect
+```
+from inspect import signature
+sig = signature(func)
+for name, param in sig.parameters.items():
+   print(param.kind, ':', 'name', '=', param.default)
+```
