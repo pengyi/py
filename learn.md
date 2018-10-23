@@ -296,3 +296,30 @@ sig = signature(func)
 for name, param in sig.parameters.items():
    print(param.kind, ':', 'name', '=', param.default)
 ```
+
+Parameter
+ - name: 参数名
+ - kind: 
+    - VAR_POSITIONAL: 通过一个*前缀来声明，如果你看到一个*xxx的函数参数声明（不是函数调用！声明和调用是两种不同的含义的），那一定是属于        VAR_POSITIONAL类型的，如同语义，这种类型的参数只能通过位置POSITIONAL传参调用，不支持关键字KEYWORD传参，在函数内部，VAR_POSITIONAL类型的参数以一个元祖(tuple)显示
+    - POSITIONAL_OR_KEYWORD: 如果没有任何*的声明，那么就是POSITIONAL_OR_KEYWORD类型的，如同语义一样，POSITIONAL_OR_KEYWORD类型的参数可以   通过位置POSITIONAL传参调用，也可以过关键字KEYWORD传参.
+
+    - KEYWORD_ONLY: 第三种是关键字参数，这种参数只会在VAR_POSITIONAL类型参数的后面而且不带**前缀。如同语义，这类参数只能用关键字KEYWORD来传参，不可以用位置传参，因为位置传的参数全让前面的VAR_POSITIONAL类型参数接收完了，所以KEYWORD_ONLY只能通过关键字才能接收到参数值
+    -  VAR_KEYWORD: 第四种是可变的关键字参数，VAR_KEYWORD类型的参数通过**前缀来声明（不是函数调用！声明和调用是两种不同的含义的）。如同语义，这种类型的参数只能通过关键字KEYWORD调用，但可以接收任意个关键字参数，甚至是0个参数，在函数内部以一个字典(dict)显示。VAR_KEYWORD类型的参数只允许有一个，只允许在函数的最后声名
+    - POSITIONAL_ONL: 历史产物
+```
+import inspect
+
+def foo(a, *b, c, **d):
+    pass
+for name, parame in inspect.signature(foo).parameters.items():
+    print(name, ': ', parame.kind)
+
+a :  POSITIONAL_OR_KEYWORD
+b :  VAR_POSITIONAL
+c :  KEYWORD_ONLY
+d :  VAR_KEYWORD
+
+```
+
+ - default
+
