@@ -436,3 +436,9 @@ action的取值有那么多，我么着重说三个store、store_false、store_t
 
 # click模块-用于快速创建命令行
 http://python.jobbole.com/87111/
+
+
+# thread local
+创建一个字典，key是线程的id，从而实现线程隔离
+通过使用weakref实现线程终结后local内存的释放
+
