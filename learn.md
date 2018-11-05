@@ -268,7 +268,6 @@ python3.3+ 性能和精度更高的库
 
 # pickle序列化模块
 
-<<<<<<< HEAD
 
 # 构造字典的方法
 - a = dict(one=1, two=2, three=3)
@@ -322,4 +321,118 @@ d :  VAR_KEYWORD
 ```
 
  - default
+https://blog.csdn.net/clarkchenhot/article/details/52092209
 
+# python data model
+https://docs.python.org/dev/reference/datamodel.html?highlight=tb_next
+
+
+# Frame objects 
+- f_back: f_back is to the previous stack frame (towards the caller)
+- f_code:  f_code is the code object being executed in this frame
+    - co_filename 函数所在文件
+    - co_name 函数名字
+- f_locals: f_locals is the dictionary used to look up local variables
+- f_globals: f_globals is used for global variables
+- f_lineno: f_lineno is the current line number of the frame
+- f_trace
+- f_lasti: gives the precise instruction (this is an index into the bytecode string of the code object).
+
+# Code objects
+ co_name gives the function name
+ co_argcount is the number of positional arguments (including arguments with default values)
+ co_nlocals is the number of local variables used by the function (including arguments);
+ co_varnames is a tuple containing the names of the local variables (starting with the argument names)
+
+ co_cellvars is a tuple containing the names of local variables that are referenced by nested functions
+ co_freevars is a tuple containing the names of free variables
+ co_code is a string representing the sequence of bytecode instructions;
+ co_consts is a tuple containing the literals used by the bytecode
+ co_names is a tuple containing the names used by the bytecode
+ co_filename is the filename from which the code was compiled
+ co_firstlineno is the first line number of the function
+
+
+# 正则转义
+python中对元字符的转义使用双反斜杠 \\ 来表示
+https://www.cnblogs.com/dyfblog/p/6088582.html
+
+# 正则表达式
+```
+# 将正则表达式编译成Pattern对象
+pattern = re.compile(r'hello')
+re.match(pattern, string[, flags])
+```
+这个方法将会从string（我们要匹配的字符串）的开头开始，尝试匹配pattern，一直向后匹配，
+如果遇到无法匹配的字符，立即返回 None，
+如果匹配未结束已经到达string的末尾，也会返回None。
+两个结果均表示匹配失败，否则匹配pattern成功，同时匹配终止，不再对 string向后匹配。
+
+Match对象是一次匹配的结果，包含了很多关于此次匹配的信息，
+可以使用Match提供的可读属性或方法来获取这些信息。
+    1.string: 匹配时使用的文本。
+    2.re: 匹配时使用的Pattern对象。
+    3.pos: 文本中正则表达式开始搜索的索引。值与Pattern.match()和Pattern.seach()方法的同名参数相同。
+    4.endpos: 文本中正则表达式结束搜索的索引。值与Pattern.match()和Pattern.seach()方法的同名参数相同。
+    5.lastindex: 最后一个被捕获的分组在文本中的索引。如果没有被捕获的分组，将为None。
+    6.lastgroup: 最后一个被捕获的分组的别名。如果这个分组没有别名或者没有被捕获的分组，将为None。
+
+方法：
+    1.group([group1, …]):
+    获得一个或多个分组截获的字符串；指定多个参数时将以元组形式返回。group1可以使用编号也可以使用别名；
+    编号0代表整个匹配的子串；不填写参数时，返回group(0)；没有截获字符串的组返回None；截获了多次的组返回最后一次截获的子串。
+    2.groups([default]):
+    以元组形式返回全部分组截获的字符串。相当于调用group(1,2,…last)。
+    default表示没有截获字符串的组以这个值替代，默认为None。
+    3.groupdict([default]):
+    返回以有别名的组的别名为键、以该组截获的子串为值的字典，没有别名的组不包含在内。default含义同上。
+    4.start([group]):
+    返回指定的组截获的子串在string中的起始索引（子串第一个字符的索引）。group默认值为0。
+    5.end([group]):
+    返回指定的组截获的子串在string中的结束索引（子串最后一个字符的索引+1）。group默认值为0。
+    6.span([group]):
+    返回(start(group), end(group))。
+    7.expand(template):
+    将匹配到的分组代入template中然后返回。template中可以使用\id或\g、\g引用分组，但不能使用编号0。\id与\g是等价的；但\10将被认为是第10个分组，如果你想表达\1之后是字符'0'，只能使用\g0。
+
+# optparse
+```
+from optparse import OptionParser
+optParser = OptionParser()
+optParser.add_option('-f','--file',action = 'store',type = "string" ,dest = 'filename')
+optParser.add_option("-v","--vison", action="store_false", dest="verbose",
+                     default='hello',help="make lots of noise [default]")
+#optParser.parse_args() 剖析并返回一个字典和列表，
+#字典中的关键字是我们所有的add_option()函数中的dest参数值，
+#而对应的value值，是add_option()函数中的default的参数或者是
+#由用户传入optParser.parse_args()的参数
+fakeArgs = ['-f','file.txt','-v','how are you', 'arg1', 'arg2']
+option , args = optParser.parse_args()
+op , ar = optParser.parse_args(fakeArgs)
+print("option : ",option)
+print("args : ",args)
+print("op : ",op)
+print("ar : ",ar)
+
+
+option :  {'filename': None, 'verbose': 'hello'}
+args :  []
+op :  {'filename': 'file.txt', 'verbose': False}
+ar :  ['how are you', 'arg1', 'arg2']
+```
+add_option()参数说明：
+    action:存储方式，分为三种store、store_false、store_true
+    type:类型
+    dest:存储的变量
+    default:默认值
+    help:帮助信息
+
+action的取值有那么多，我么着重说三个store、store_false、store_true 三个取值。 action默认取值store。
+   --store 上表示命令行参数的值保存在options对象中。例如上面一段代码，如果我们对optParser.parse_args()函数传入的参数列表中带有‘-f’，
+那么就会将列表中‘-f’的下一个元素作为其dest的实参filename的值，他们两个参数形成一个字典中的一个元素{filename：file_txt}。
+相反当我们的参数列表中没有‘-f’这个元素时，那么filename的值就会为空。
+  --store_false fakeArgs 中存在'-v'verbose将会返回False，而不是‘how are you’，也就是说verbose的值与'-v'的后一位无关，只与‘-v’存在不存在有关。
+  --store_ture  这与action="store_false"类似，只有其中有参数'-v'存在，则verbose的值为True,如果'-v'不存在，那么verbose的值为None。
+
+# click模块-用于快速创建命令行
+http://python.jobbole.com/87111/
