@@ -313,6 +313,27 @@ user.c.id
 3 如果Python在任何父类中都找不到__metaclass__，它就会在模块层次中去寻找__metaclass__，并尝试做同样的操作。
 4 如果还是找不到__metaclass__,Python就会用内置的type来创建这个类对象。
 
+Base = declarative_base()
+
+生成Base的元类为DeclarativeMeta, 可以理解为Base.__metaclass__ == DeclarativeMeta
+因此继承自Base的所有子类都使用DeclarativeMeta元类创建类
+
+class DeclarativeMeta(type):
+    def __init__(cls, classname, bases, dict_):
+        # _decl_class_registry在Base的子类中是没有的
+        if "_decl_class_registry" not in cls.__dict__:
+            _as_declarative(cls, classname, cls.__dict__)
+        type.__init__(cls, classname, bases, dict_)
+
+    def __setattr__(cls, key, value):
+        _add_attribute(cls, key, value)
+
+    def __delattr__(cls, key):
+        _del_attribute(cls, key)
+
+
+
+
 # 运算符重载
 
 cls.id == 2
